@@ -1,9 +1,9 @@
 package tbbattleengine;
 
-public class App {
+public class Main {
     private Mode currentMode;
 
-    public App() {
+    public Main() {
         currentMode = Mode.PLAYER;   
 
         // Engine Selector
@@ -23,6 +23,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        System.out.println(new Main().getGreeting());
     }
 }
