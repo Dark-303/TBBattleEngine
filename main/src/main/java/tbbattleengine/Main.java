@@ -9,7 +9,7 @@ public class Main {
         // Engine Selector
         switch(currentMode) {
             case Mode.PLAYER:
-                getGreeting();
+                
                 break;
             case Mode.WEAPON:
                 break;
@@ -18,8 +18,8 @@ public class Main {
         }
     }
 
-    public String getGreeting() {
-        return "Hello World!";
+    public void loadPlayer() {
+        
     }
 
     public static void main(String[] args) {
