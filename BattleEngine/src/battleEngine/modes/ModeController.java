@@ -7,7 +7,7 @@ public class ModeController {
     public Player player;
 
     public ModeController(Modes currentMode, PlayerData playerData, PlayerData enemyData) {
-        switch(currentMode){
+        switch (currentMode) {
             case Modes.PLAYER:
                 System.out.println("Initializing player mode...");
                 player = new Player(playerData, enemyData);
@@ -18,6 +18,6 @@ public class ModeController {
             case Modes.BOTH:
                 System.out.println("Unknown command.");
                 break;
-            }
+        }
     }
 }
