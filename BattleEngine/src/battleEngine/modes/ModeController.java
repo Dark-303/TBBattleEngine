@@ -11,6 +11,7 @@ public class ModeController {
             case Modes.PLAYER:
                 System.out.println("Initializing player mode...");
                 player = new Player(playerData, enemyData);
+                System.out.println("Match Completed");
                 break;
             case Modes.WEAPON:
                 System.out.println("Battle ended!");

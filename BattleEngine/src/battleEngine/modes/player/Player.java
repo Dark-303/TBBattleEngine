@@ -222,6 +222,7 @@ public class Player {
                 if (playerData.health <= 0) {
                     System.out.println("You have been defeated!");
                     game = false;
+                    break;
                 }
             }
 
@@ -231,7 +232,7 @@ public class Player {
             System.out.println("Enemy HP: " + enemyData.health);
             System.out.println("Enemy Armor HP: " + enemyData.armorHP);
             System.out.println();
-            if (playerDamage > (enemyData.health + enemyData.armorHP) / 2
+            if (playerDamage > (enemyData.health + enemyData.armorHP) * 0.8
                     && enemyEvadeCooldown >= enemyData.evadeCooldown) {
                 enemyEvadeAmount = Math.random() * playerDamage * enemyData.speed / 5;
                 playerDamage -= enemyEvadeAmount;
@@ -243,6 +244,23 @@ public class Player {
                 enemyHyperModeCooldown += 1;
                 enemyDamage = 0;
                 System.out.println("Evaded " + enemyEvadeAmount + " damage");
+                System.out.println();
+            } else if (enemyUltimateCooldown >= enemyData.ultimateCooldown) {
+                enemyDamage = (float) Math.random()
+                        * (enemyData.ultimateMaxDamage - enemyData.ultimateMinDamage)
+                        + enemyData.ultimateMinDamage;
+                if (Math.random() < enemyData.ultimateCritChance) {
+                    enemyDamage *= 1 + enemyData.ultimateCritMultiplier;
+                    System.out.println("Critical hit!");
+                }
+                enemyDamage = BattleEngineUtil.round(enemyDamage, 2);
+                enemyPrimary1Cooldown += 1;
+                enemySecondary1Cooldown += 1;
+                enemyEvadeCooldown += 1;
+                enemyUltimateCooldown = 0;
+                enemyHyperModeCooldown += 1;
+                System.out.println("Using " + enemyData.ultimateName + "!");
+                System.out.println("Dealing " + enemyDamage + " damage...");
                 System.out.println();
             } else if (enemyPrimary1Cooldown >= enemyData.primaryAttack1Cooldown) {
                 enemyDamage = (float) Math.random()
