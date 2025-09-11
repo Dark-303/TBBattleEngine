@@ -43,9 +43,11 @@ public class Player {
                     System.out.println("   (Ready)");
                 } else {
                     if (playerData.primaryAttack1Cooldown - playerPrimary1Cooldown > 1) {
-                        System.out.println("   (Cooldown: " + (playerData.primaryAttack1Cooldown - playerPrimary1Cooldown) + " turns)");
+                        System.out.println("   (Cooldown: "
+                                + (playerData.primaryAttack1Cooldown - playerPrimary1Cooldown) + " turns)");
                     } else {
-                        System.out.println("   (Cooldown: " + (playerData.primaryAttack1Cooldown - playerPrimary1Cooldown) + " turn)");
+                        System.out.println("   (Cooldown: "
+                                + (playerData.primaryAttack1Cooldown - playerPrimary1Cooldown) + " turn)");
                     }
                 }
                 System.out.println("2. " + playerData.secondaryAttack1Name + " : Enter 2");
@@ -53,9 +55,11 @@ public class Player {
                     System.out.println("   (Ready)");
                 } else {
                     if (playerData.secondaryAttack1Cooldown - playerSecondary1Cooldown > 1) {
-                        System.out.println("   (Cooldown: " + (playerData.secondaryAttack1Cooldown - playerSecondary1Cooldown) + " turns)");
+                        System.out.println("   (Cooldown: "
+                                + (playerData.secondaryAttack1Cooldown - playerSecondary1Cooldown) + " turns)");
                     } else {
-                        System.out.println("   (Cooldown: " + (playerData.secondaryAttack1Cooldown - playerSecondary1Cooldown) + " turn)");
+                        System.out.println("   (Cooldown: "
+                                + (playerData.secondaryAttack1Cooldown - playerSecondary1Cooldown) + " turn)");
                     }
                 }
                 System.out.println("3. Evade : Enter 3");
@@ -63,9 +67,11 @@ public class Player {
                     System.out.println("   (Ready)");
                 } else {
                     if (playerData.evadeCooldown - playerEvadeCooldown > 1) {
-                        System.out.println("   (Cooldown: " + (playerData.evadeCooldown - playerEvadeCooldown) + " turns)");
+                        System.out.println(
+                                "   (Cooldown: " + (playerData.evadeCooldown - playerEvadeCooldown) + " turns)");
                     } else {
-                        System.out.println("   (Cooldown: " + (playerData.evadeCooldown - playerEvadeCooldown) + " turn)");
+                        System.out.println(
+                                "   (Cooldown: " + (playerData.evadeCooldown - playerEvadeCooldown) + " turn)");
                     }
                 }
                 System.out.println("4. " + playerData.ultimateName + " : Enter 4");
@@ -73,17 +79,23 @@ public class Player {
                     System.out.println("   (Ready)");
                 } else {
                     if (playerData.ultimateCooldown - playerUltimateCooldown > 1) {
-                        System.out.println("   (Cooldown: " + (playerData.ultimateCooldown - playerUltimateCooldown) + " turns)");
+                        System.out.println(
+                                "   (Cooldown: " + (playerData.ultimateCooldown - playerUltimateCooldown) + " turns)");
                     } else {
-                        System.out.println("   (Cooldown: " + (playerData.ultimateCooldown - playerUltimateCooldown) + " turn)");
+                        System.out.println(
+                                "   (Cooldown: " + (playerData.ultimateCooldown - playerUltimateCooldown) + " turn)");
                     }
                 }
                 System.out.println("5. Enter Hyper Mode : Enter 5");
-                /*if (BattleEngineUtil.cooldown(playerHyperModeCooldown, playerData.hyperModeCooldown))) {
-                    System.out.println("   (Ready)");
-                } else {
-                    System.out.println("   (Cooldown: " + (playerData.hyperModeCooldown - playerHyperModeCooldown) + " turns)");
-                }*/
+                /*
+                 * if (BattleEngineUtil.cooldown(playerHyperModeCooldown,
+                 * playerData.hyperModeCooldown))) {
+                 * System.out.println("   (Ready)");
+                 * } else {
+                 * System.out.println("   (Cooldown: " + (playerData.hyperModeCooldown -
+                 * playerHyperModeCooldown) + " turns)");
+                 * }
+                 */
                 System.out.print("Enter your choice: ");
                 try {
                     choice = selection.nextInt();
@@ -157,25 +169,25 @@ public class Player {
                     break;
                 case 4:
                     if (playerUltimateCooldown >= playerData.ultimateCooldown) {
-                            playerDamage = (float) Math.random()
-                                    * (playerData.ultimateMaxDamage - playerData.ultimateMinDamage)
-                                    + playerData.ultimateMinDamage;
-                            if (Math.random() < playerData.ultimateCritChance) {
-                                playerDamage *= 1 + playerData.ultimateCritMultiplier;
-                                System.out.println("Critical hit!");
-                            }
-                            playerDamage = BattleEngineUtil.round(playerDamage, 2);
-                            playerPrimary1Cooldown += 1;
-                            playerSecondary1Cooldown += 1;
-                            playerEvadeCooldown += 1;
-                            playerUltimateCooldown = 0;
-                            playerHyperModeCooldown += 1;
-                            System.out.println("Using " + playerData.ultimateName + "!");
-                            System.out.println("Dealing " + playerDamage + " damage...");
-                            System.out.println();
-                        } else {
-                            System.out.println("Ability on cooldown. Turn skipped.");
+                        playerDamage = (float) Math.random()
+                                * (playerData.ultimateMaxDamage - playerData.ultimateMinDamage)
+                                + playerData.ultimateMinDamage;
+                        if (Math.random() < playerData.ultimateCritChance) {
+                            playerDamage *= 1 + playerData.ultimateCritMultiplier;
+                            System.out.println("Critical hit!");
                         }
+                        playerDamage = BattleEngineUtil.round(playerDamage, 2);
+                        playerPrimary1Cooldown += 1;
+                        playerSecondary1Cooldown += 1;
+                        playerEvadeCooldown += 1;
+                        playerUltimateCooldown = 0;
+                        playerHyperModeCooldown += 1;
+                        System.out.println("Using " + playerData.ultimateName + "!");
+                        System.out.println("Dealing " + playerDamage + " damage...");
+                        System.out.println();
+                    } else {
+                        System.out.println("Ability on cooldown. Turn skipped.");
+                    }
                     System.out.println();
                     break;
                 case 5:
@@ -219,7 +231,8 @@ public class Player {
             System.out.println("Enemy HP: " + enemyData.health);
             System.out.println("Enemy Armor HP: " + enemyData.armorHP);
             System.out.println();
-            if (playerDamage > (enemyData.health + enemyData.armorHP) / 2 && enemyEvadeCooldown >= enemyData.evadeCooldown) {
+            if (playerDamage > (enemyData.health + enemyData.armorHP) / 2
+                    && enemyEvadeCooldown >= enemyData.evadeCooldown) {
                 enemyEvadeAmount = Math.random() * playerDamage * enemyData.speed / 5;
                 playerDamage -= enemyEvadeAmount;
                 enemyEvadeAmount = BattleEngineUtil.round(enemyEvadeAmount, 2);
