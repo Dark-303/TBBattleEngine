@@ -59,9 +59,16 @@ public class PlayerData {
     public String armorName;
     public double armorHP;
 
+    // Evade
+    public int evadeCooldown;
+
     public void setGeneralStats(double health, double speed) {
         this.health = health;
         this.speed = speed;
+    }
+
+    public void setEvade(int cooldown) {
+        this.evadeCooldown = cooldown;
     }
 
     public void setPrimaryAttack1(String weaponName, String name, double maxDamage, double minDamage, double CritChance,
