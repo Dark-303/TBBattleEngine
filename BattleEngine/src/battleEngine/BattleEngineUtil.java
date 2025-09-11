@@ -13,4 +13,12 @@ public class BattleEngineUtil {
             Thread.currentThread().interrupt();
         }
     }
+
+    public static boolean cooldown(int cooldown, int cooldownMax) {
+        if (cooldown >= cooldownMax) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
