@@ -29,8 +29,8 @@ public class BattleEngine {
     }
 
     public void setEnemyData() {
-        enemyData.setArmor("Tekketsuhana Armor", 150);
-        enemyData.setGeneralStats(100, 10);
+        enemyData.setArmor("Tekketsuhana Armor", 100);
+        enemyData.setGeneralStats(100, 7);
         enemyData.setEvade(1);
         enemyData.setPrimaryAttack1("Fist", "Ten Thousand Shadow Fists", 60.00, 40.00, 0.70, 0.60, 1);
         enemyData.setSecondaryAttack1("Dragon Palm", 50.00, 40.00, 0.40, 0.30, 1);
