@@ -1,16 +1,16 @@
-package battleEngine.modes;
+package battleEngine.modes.game;
 
-import battleEngine.modes.player.Player;
 import battleEngine.Modes;
+import battleEngine.modes.PlayerData;
 
 public class ModeController {
-    public Player player;
+    public GameIOPlayer player;
 
     public ModeController(Modes currentMode, PlayerData playerData, PlayerData enemyData) {
         switch (currentMode) {
             case Modes.PLAYER:
                 System.out.println("Initializing player mode...");
-                player = new Player(playerData, enemyData);
+                player = new GameIOPlayer(playerData, enemyData);
                 System.out.println("Match Completed");
                 break;
             case Modes.WEAPON:

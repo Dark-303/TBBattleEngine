@@ -1,4 +1,4 @@
-package battleEngine.modes.player;
+package battleEngine.modes.game;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -6,7 +6,7 @@ import java.util.Scanner;
 import battleEngine.BattleEngineUtil;
 import battleEngine.modes.PlayerData;
 
-public class Player {
+public class Game {
     public boolean game = true;
     public boolean check = false;
     public Scanner selection = new Scanner(System.in);
@@ -26,7 +26,7 @@ public class Player {
     public int enemyUltimateCooldown = 0;
     public int enemyHyperModeCooldown = 0;
 
-    public Player(PlayerData playerData, PlayerData enemyData) {
+    public Game(PlayerData playerData, PlayerData enemyData) {
         System.out.println("Player mode initiated.");
         System.out.println();
         while (game) {

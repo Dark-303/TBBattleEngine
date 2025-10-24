@@ -18,14 +18,18 @@ public class Attack {
         this.cooldown = cooldown;
     }
 
-    public double useAttack() {
-        boolean isCrit = false;
+    public double useAttack(boolean crit) {
         double playerDamage = (float) Math.random()
                 * (maxDamage - minDamage)
                 + minDamage;
-        if (Math.random() < playerData.primaryAttack1CritChance) {
-            playerDamage *= 1 + playerData.primaryAttack1CritMultiplier;
-            isCrit = true;
+        if (crit) {
+            playerDamage *= 1 + critMultiplier;
         }
+        return playerDamage;
+    }
+
+    public boolean isCriticalHit() {
+        double roll = Math.random() * 100;
+        return roll < critChance;
     }
 }
