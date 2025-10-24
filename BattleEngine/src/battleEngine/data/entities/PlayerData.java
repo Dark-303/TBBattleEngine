@@ -10,11 +10,11 @@ public class PlayerData {
     public double speed;
 
     // Attacks
-    public Attack primaryAttack;    
+    public Attack primaryAttack;
     public Attack secondaryAttack;
     public Attack ultimateAttack;
 
-    //Weapon
+    // Weapon
     public Weapon weapon;
 
     // Hyper Mode
@@ -28,7 +28,8 @@ public class PlayerData {
     // Evade
     public int evadeCooldown;
 
-    public PlayerData(double health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate, int evadeCooldown) {
+    public PlayerData(double health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
+            int evadeCooldown) {
         this.health = health;
         this.speed = speed;
         this.armor = armor;

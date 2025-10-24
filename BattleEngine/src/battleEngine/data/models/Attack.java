@@ -6,7 +6,7 @@ public class Attack {
     public double minDamage;
     public double critChance;
     public double critMultiplier;
-    public double cooldown;
+    public int cooldown;
 
     public Attack(String name, double maxDamage, double minDamage, double CritChance,
             double CritMultiplier, int cooldown) {
