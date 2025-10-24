@@ -1,6 +1,10 @@
-package battleEngine.modes;
+package battleEngine.data.entities;
 
-public class PlayerData {
+import battleEngine.data.models.Armor;
+import battleEngine.data.models.Attack;
+import battleEngine.data.models.Weapon;
+
+public class EnemyData {
     // General Stats
     public double health;
     public double speed;
@@ -19,43 +23,32 @@ public class PlayerData {
     public int hyperModeCooldown;
 
     // Armor Stats
-    public String armorName;
-    public double armorHP;
+    public Armor armor;
 
     // Evade
     public int evadeCooldown;
 
-    public PlayerData(double health, double speed, Attack primary, Attack secondary, Attack ultimate) {
+    public EnemyData(double health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate, int evadeCooldown) {
         this.health = health;
         this.speed = speed;
+        this.armor = armor;
         this.primaryAttack = primary;
         this.secondaryAttack = secondary;
         this.ultimateAttack = ultimate;
+        this.evadeCooldown = evadeCooldown;
     }
 
-    public PlayerData(double health, double speed, Weapon weapon) {
+    public EnemyData(double health, double speed, Armor armor, Weapon weapon, int evadeCooldown) {
         this.health = health;
         this.speed = speed;
+        this.armor = armor;
         this.weapon = weapon;
-    }
-
-    public void setGeneralStats(double health, double speed) {
-        this.health = health;
-        this.speed = speed;
-    }
-
-    public void setEvade(int cooldown) {
-        this.evadeCooldown = cooldown;
+        this.evadeCooldown = evadeCooldown;
     }
 
     public void setHyperMode(double multiplier, int duration, int cooldown) {
         hyperModeMultiplier = multiplier;
         hyperModeDuration = duration;
         hyperModeCooldown = cooldown;
-    }
-
-    public void setArmor(String name, double hp) {
-        armorName = name;
-        armorHP = hp;
     }
 }
