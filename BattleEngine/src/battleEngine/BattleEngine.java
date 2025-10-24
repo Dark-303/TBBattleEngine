@@ -1,7 +1,7 @@
 package battleEngine;
 
-import battleEngine.modes.PlayerData;
-import battleEngine.modes.game.ModeController;
+import battleEngine.data.entities.PlayerData;
+import battleEngine.game.ModeController;
 
 public class BattleEngine {
     public Modes currentMode;

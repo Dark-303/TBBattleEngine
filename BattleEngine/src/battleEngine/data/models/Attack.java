@@ -1,4 +1,4 @@
-package battleEngine.modes;
+package battleEngine.data.models;
 
 public class Attack {
     public String name;

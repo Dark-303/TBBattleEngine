@@ -1,10 +1,10 @@
-package battleEngine.modes.game;
+package battleEngine.game;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import battleEngine.BattleEngineUtil;
-import battleEngine.modes.PlayerData;
+import battleEngine.data.entities.PlayerData;
 
 public class Game {
     public boolean game = true;

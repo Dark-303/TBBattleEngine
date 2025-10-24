@@ -1,4 +1,8 @@
-package battleEngine.modes;
+package battleEngine.data.entities;
+
+import battleEngine.data.models.Armor;
+import battleEngine.data.models.Attack;
+import battleEngine.data.models.Weapon;
 
 public class PlayerData {
     // General Stats
@@ -40,15 +44,6 @@ public class PlayerData {
         this.armor = armor;
         this.weapon = weapon;
         this.evadeCooldown = evadeCooldown;
-    }
-
-    public void setGeneralStats(double health, double speed) {
-        this.health = health;
-        this.speed = speed;
-    }
-
-    public void setEvade(int cooldown) {
-        this.evadeCooldown = cooldown;
     }
 
     public void setHyperMode(double multiplier, int duration, int cooldown) {

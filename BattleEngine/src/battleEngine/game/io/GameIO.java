@@ -1,13 +1,14 @@
-package battleEngine.modes.game;
+package battleEngine.game.io;
 
-import battleEngine.modes.PlayerData;
+import battleEngine.data.entities.PlayerData;
+import battleEngine.data.entities.enemies.ScaledEnemy;
 
 public interface GameIO {
     public default PlayerData updatePlayer() {
         return null;
     }
 
-    public default EnemyData updatePlayer() {
+    public default ScaledEnemy updateEnemy() {
         return null;
     }
 }

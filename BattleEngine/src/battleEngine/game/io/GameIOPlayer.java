@@ -1,6 +1,7 @@
 package battleEngine.game.io;
 
 import battleEngine.data.entities.PlayerData;
+import battleEngine.data.entities.enemies.ScaledEnemy;
 import battleEngine.data.models.Armor;
 import battleEngine.data.models.Attack;
 
@@ -9,7 +10,8 @@ public class GameIOPlayer implements GameIO {
     private Attack primary;
     private Attack secondary;
     private Attack ultimate;
-    private Armor armor;    
+    private Armor armor;   
+    private ScaledEnemy enemy; 
 
     // Constructor
     public GameIOPlayer() {
@@ -18,10 +20,16 @@ public class GameIOPlayer implements GameIO {
         ultimate = new Attack("Rose Thorns", 100.00, 90.00, 0.80, 0.5, 3);
         armor = new Armor("Tekketsuhana Armor", 100);
         playerData = new PlayerData(100, 7, armor, primary, secondary, ultimate, 1);
+        enemy = new ScaledEnemy(0.8);
     }
 
     @Override
     public PlayerData updatePlayer() {
         return playerData;
+    }
+
+    @Override
+    public ScaledEnemy updateEnemy() {
+        return enemy;
     }
 }
