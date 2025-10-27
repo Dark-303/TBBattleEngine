@@ -2,14 +2,14 @@ package battleEngine.data.models;
 
 public class Weapon {
     public String name;
-    public Attack primary;
-    public Attack secondary;
-    public Attack ultimate;
+    public Attack primaryAttack;
+    public Attack secondaryAttack;
+    public Attack ultimateAttack;
 
     public Weapon(String name, Attack primary, Attack secondary, Attack ultimate) {
         this.name = name;
-        this.primary = primary;
-        this.secondary = secondary;
-        this.ultimate = ultimate;
+        this.primaryAttack = primary;
+        this.secondaryAttack = secondary;
+        this.ultimateAttack = ultimate;
     }
 }
