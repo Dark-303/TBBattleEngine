@@ -28,7 +28,7 @@ public class PlayerData {
     // Evade
     public int evadeCooldown;
 
-    public PlayerData(double health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
+    public PlayerData(int health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
             int evadeCooldown) {
         this.health = health;
         this.speed = speed;
@@ -39,7 +39,7 @@ public class PlayerData {
         this.evadeCooldown = evadeCooldown;
     }
 
-    public PlayerData(double health, double speed, Armor armor, Weapon weapon, int evadeCooldown) {
+    public PlayerData(int health, int speed, Armor armor, Weapon weapon, int evadeCooldown) {
         this.health = health;
         this.speed = speed;
         this.armor = armor;

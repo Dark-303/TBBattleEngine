@@ -9,7 +9,7 @@ public class Attack {
     public int cooldown;
     public int currCooldown;
 
-    public Attack(String name, double maxDamage, double minDamage, double CritChance,
+    public Attack(String name, int maxDamage, int minDamage, double CritChance,
             double CritMultiplier, int cooldown, int currCooldown) {
         this.name = name;
         this.maxDamage = maxDamage;
@@ -27,7 +27,7 @@ public class Attack {
         if (crit) {
             playerDamage *= 1 + critMultiplier;
         }
-        return playerDamage;
+        return (int)playerDamage;
     }
 
     public boolean isCriticalHit() {
