@@ -95,75 +95,33 @@ public class Game {
             BattleEngineUtil.wait(3);
 
             game = checkDamage(playerDamage, enemyData);
-            if (game) {
+            if (!game) {
                 break;
             }
-            
+
+            // Convert to single method later
             stats();
-            if (playerDamage > (enemyData.health + enemyData.armorHP) * 0.8
-                    && enemyEvadeCooldown >= enemyData.evadeCooldown) {
+            if (playerDamage > (enemyData.health + enemyData.armor.armorHP) * 0.8
+                    && cooldowns.enemyEvadeCooldown >= enemyData.evadeCooldown) {
                 enemyEvadeAmount = Math.random() * playerDamage * enemyData.speed / 5;
                 playerDamage -= enemyEvadeAmount;
                 enemyEvadeAmount = BattleEngineUtil.round(enemyEvadeAmount, 2);
-                enemyPrimary1Cooldown += 1;
-                enemySecondary1Cooldown += 1;
-                enemyEvadeCooldown = 0;
-                enemyUltimateCooldown += 1;
-                enemyHyperModeCooldown += 1;
+                cooldowns.enemyPrimary1Cooldown += 1;
+                cooldowns.enemySecondary1Cooldown += 1;
+                cooldowns.enemyEvadeCooldown = 0;
+                cooldowns.enemyUltimateCooldown += 1;
+                cooldowns.enemyHyperModeCooldown += 1;
                 enemyDamage = 0;
                 System.out.println("Evaded " + enemyEvadeAmount + " damage");
                 System.out.println();
-            } else if (enemyUltimateCooldown >= enemyData.ultimateCooldown) {
-                enemyDamage = (float) Math.random()
-                        * (enemyData.ultimateMaxDamage - enemyData.ultimateMinDamage)
-                        + enemyData.ultimateMinDamage;
-                if (Math.random() < enemyData.ultimateCritChance) {
-                    enemyDamage *= 1 + enemyData.ultimateCritMultiplier;
-                    System.out.println("Critical hit!");
-                }
-                enemyDamage = BattleEngineUtil.round(enemyDamage, 2);
-                enemyPrimary1Cooldown += 1;
-                enemySecondary1Cooldown += 1;
-                enemyEvadeCooldown += 1;
-                enemyUltimateCooldown = 0;
-                enemyHyperModeCooldown += 1;
-                System.out.println("Using " + enemyData.ultimateName + "!");
-                System.out.println("Dealing " + enemyDamage + " damage...");
-                System.out.println();
-            } else if (enemyPrimary1Cooldown >= enemyData.primaryAttack1Cooldown) {
-                enemyDamage = (float) Math.random()
-                        * (enemyData.primaryAttack1MaxDamage - enemyData.primaryAttack1MinDamage)
-                        + enemyData.primaryAttack1MinDamage;
-                if (Math.random() < enemyData.primaryAttack1CritChance) {
-                    enemyDamage *= 1 + enemyData.primaryAttack1CritMultiplier;
-                    System.out.println("Critical hit!");
-                }
-                enemyDamage = BattleEngineUtil.round(enemyDamage, 2);
-                enemyPrimary1Cooldown = 0;
-                enemySecondary1Cooldown += 1;
-                enemyEvadeCooldown += 1;
-                enemyUltimateCooldown += 1;
-                enemyHyperModeCooldown += 1;
-                System.out.println("Using " + enemyData.primaryAttack1Name + "!");
-                System.out.println("Dealing " + enemyDamage + " damage...");
-                System.out.println();
-            } else if (enemySecondary1Cooldown >= enemyData.secondaryAttack1Cooldown) {
-                enemyDamage = (float) Math.random()
-                        * (enemyData.secondaryAttack1MaxDamage - enemyData.secondaryAttack1MinDamage)
-                        + enemyData.secondaryAttack1MinDamage;
-                if (Math.random() < enemyData.secondaryAttack1CritChance) {
-                    enemyDamage *= 1 + enemyData.secondaryAttack1CritMultiplier;
-                    System.out.println("Critical hit!");
-                }
-                enemyDamage = BattleEngineUtil.round(enemyDamage, 2);
-                enemyPrimary1Cooldown += 1;
-                enemySecondary1Cooldown = 0;
-                enemyEvadeCooldown += 1;
-                enemyUltimateCooldown += 1;
-                enemyHyperModeCooldown += 1;
-                System.out.println("Using " + enemyData.secondaryAttack1Name + "!");
-                System.out.println("Dealing " + enemyDamage + " damage...");
-                System.out.println();
+            } else if (cooldowns.enemyUltimateCooldown >= enemyData.ultimateAttack.cooldown) {
+                cooldowns.enemyUltimateCooldown = runEnemyTurn(cooldowns.enemyUltimateCooldown,
+                        enemyData.ultimateAttack);
+            } else if (cooldowns.enemyPrimary1Cooldown >= enemyData.primaryAttack.cooldown) {
+                cooldowns.enemyPrimary1Cooldown = runEnemyTurn(cooldowns.enemyUltimateCooldown,
+                        enemyData.ultimateAttack);
+            } else if (cooldowns.enemySecondary1Cooldown >= enemyData.secondaryAttack.cooldown) {
+                cooldowns.enemyPrimary2Cooldown = runEnemyTurn(cooldowns.enemyPrimary2Cooldown, enemyData.secondaryAttack);
             } else {
                 System.out.println("Enemy ability on cooldown. Turn skipped.");
             }
@@ -171,25 +129,9 @@ public class Game {
             // Pause to show enemy action
             BattleEngineUtil.wait(3);
 
-            if (playerDamage > 0) {
-                if (enemyData.armorHP > 0) {
-                    enemyData.armorHP -= playerDamage;
-                    enemyData.armorHP = BattleEngineUtil.round(enemyData.armorHP, 2);
-                    if (enemyData.armorHP < 0) {
-                        enemyData.health += enemyData.armorHP;
-                        enemyData.armorHP = 0;
-                    }
-                } else {
-                    enemyData.health -= playerDamage;
-                    enemyData.health = BattleEngineUtil.round(enemyData.health, 2);
-                    if (enemyData.health < 0) {
-                        enemyData.health = 0;
-                    }
-                }
-                if (enemyData.health <= 0) {
-                    System.out.println("You have defeated the enemy!");
-                    game = false;
-                }
+            game = checkDamage(enemyDamage, playerData);
+            if (!game) {
+                break;
             }
         }
     }
@@ -217,6 +159,20 @@ public class Game {
         } else {
             System.out.println("Ability on cooldown. Turn skipped.");
         }
+        return 0;
+    }
+
+    public int runEnemyTurn(double currCooldown, Attack attack) {
+        enemyDamage = enemyData.ultimateAttack.useAttack(Math.random() < attack.critChance);
+        enemyDamage = BattleEngineUtil.round(enemyDamage, 2);
+        cooldowns.enemyPrimary1Cooldown += 1;
+        cooldowns.enemySecondary1Cooldown += 1;
+        cooldowns.enemyEvadeCooldown += 1;
+        cooldowns.enemyUltimateCooldown = 0;
+        cooldowns.enemyHyperModeCooldown += 1;
+        System.out.println("Using " + attack.name + "!");
+        System.out.println("Dealing " + enemyDamage + " damage...");
+        System.out.println();
         return 0;
     }
 
