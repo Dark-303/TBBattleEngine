@@ -8,7 +8,6 @@ import battleEngine.Constants;
 import battleEngine.Constants.Mode;
 import battleEngine.data.entities.EnemyData;
 import battleEngine.data.entities.PlayerData;
-import battleEngine.data.entities.enemies.ScaledFireEnemy;
 import battleEngine.data.models.Attack;
 import battleEngine.game.io.GameIO;
 import battleEngine.game.io.GameIOPlayer;
@@ -47,12 +46,12 @@ public class Game {
     public EnemyData enemyData;
 
     // Damage Trackers
-    public double playerDamage;
-    public double enemyDamage;
+    public int playerDamage;
+    public int enemyDamage;
 
     // Evade Trackers
-    public double playerEvadeAmount;
-    public double enemyEvadeAmount;
+    public int playerEvadeAmount;
+    public int enemyEvadeAmount;
 
     public Game(GameIO io) {
         // Initialize Entities
@@ -64,7 +63,8 @@ public class Game {
     }
 
     public void runGame() {
-                while (game) {
+        while (game) {
+            System.out.println("Player's Turn");
             choice = playerChoice();
             switch (choice) {
                 case 1:
@@ -103,12 +103,12 @@ public class Game {
             }
 
             // Convert to single method later
+            System.out.println("Enemy's Turn");
             stats();
             if (playerDamage > (enemyData.health + enemyData.armor.armorHP) * 0.8
                     && cooldowns.enemyEvadeCooldown >= enemyData.evadeCooldown) {
-                enemyEvadeAmount = Math.random() * playerDamage * enemyData.speed / 5;
+                enemyEvadeAmount = (int) (Math.random() * playerDamage * enemyData.speed / 5);
                 playerDamage -= enemyEvadeAmount;
-                enemyEvadeAmount = BattleEngineUtil.round(enemyEvadeAmount, 2);
                 cooldowns.enemyPrimary1Cooldown += 1;
                 cooldowns.enemySecondary1Cooldown += 1;
                 cooldowns.enemyEvadeCooldown = 0;
@@ -121,10 +121,11 @@ public class Game {
                 cooldowns.enemyUltimateCooldown = runEnemyTurn(cooldowns.enemyUltimateCooldown,
                         enemyData.ultimateAttack);
             } else if (cooldowns.enemyPrimary1Cooldown >= enemyData.primaryAttack.cooldown) {
-                cooldowns.enemyPrimary1Cooldown = runEnemyTurn(cooldowns.enemyUltimateCooldown,
-                        enemyData.ultimateAttack);
+                cooldowns.enemyPrimary1Cooldown = runEnemyTurn(cooldowns.enemyPrimary1Cooldown,
+                        enemyData.primaryAttack);
             } else if (cooldowns.enemySecondary1Cooldown >= enemyData.secondaryAttack.cooldown) {
-                cooldowns.enemyPrimary2Cooldown = runEnemyTurn(cooldowns.enemyPrimary2Cooldown, enemyData.secondaryAttack);
+                cooldowns.enemyPrimary2Cooldown = runEnemyTurn(cooldowns.enemyPrimary2Cooldown,
+                        enemyData.secondaryAttack);
             } else {
                 System.out.println("Enemy ability on cooldown. Turn skipped.");
             }
@@ -140,7 +141,6 @@ public class Game {
     }
 
     public void stats() {
-        System.out.println("Enemy's turn.");
         System.out.println("Player HP: " + playerData.health);
         System.out.println("Armor HP: " + playerData.armor.armorHP);
         System.out.println("Enemy HP: " + enemyData.health);
@@ -150,7 +150,7 @@ public class Game {
 
     public int runTurn(double currCooldown, Attack attack) {
         if (currCooldown >= attack.cooldown) {
-            playerDamage = attack.useAttack(Math.random() < attack.critChance);
+            playerDamage = (int) attack.useAttack(Math.random() < attack.critChance);
             cooldowns.playerPrimary1Cooldown += 1;
             cooldowns.playerSecondary1Cooldown += 1;
             cooldowns.playerEvadeCooldown += 1;
@@ -166,8 +166,7 @@ public class Game {
     }
 
     public int runEnemyTurn(double currCooldown, Attack attack) {
-        enemyDamage = enemyData.ultimateAttack.useAttack(Math.random() < attack.critChance);
-        enemyDamage = BattleEngineUtil.round(enemyDamage, 2);
+        enemyDamage = (int) attack.useAttack(Math.random() < attack.critChance);
         cooldowns.enemyPrimary1Cooldown += 1;
         cooldowns.enemySecondary1Cooldown += 1;
         cooldowns.enemyEvadeCooldown += 1;
@@ -181,9 +180,8 @@ public class Game {
 
     public int runEvade(double currCooldown, double speed) {
         if (currCooldown >= playerData.evadeCooldown) {
-            playerEvadeAmount = Math.random() * playerDamage * speed / 5;
+            playerEvadeAmount = (int) (Math.random() * playerDamage * speed / 5);
             playerDamage -= playerEvadeAmount;
-            playerEvadeAmount = BattleEngineUtil.round(playerEvadeAmount, 2);
             cooldowns.playerPrimary1Cooldown += 1;
             cooldowns.playerSecondary1Cooldown += 1;
             cooldowns.playerEvadeCooldown = 0;
@@ -230,14 +228,13 @@ public class Game {
         if (damage > 0) {
             if (victim.armor.armorHP > 0) {
                 victim.armor.armorHP -= enemyDamage;
-                victim.armor.armorHP = BattleEngineUtil.round(victim.armor.armorHP, 2);
                 if (victim.armor.armorHP < 0) {
                     victim.health += victim.armor.armorHP;
                     victim.armor.armorHP = 0;
                 }
             } else {
                 victim.health -= enemyDamage;
-                victim.health = BattleEngineUtil.round(victim.health, 2);
+                victim.health = (int) victim.health;
                 if (victim.health < 0) {
                     victim.health = 0;
                 }
@@ -253,21 +250,21 @@ public class Game {
     public boolean checkDamage(double damage, EnemyData victim) {
         if (damage > 0) {
             if (victim.armor.armorHP > 0) {
-                victim.armor.armorHP -= enemyDamage;
-                victim.armor.armorHP = BattleEngineUtil.round(victim.armor.armorHP, 2);
+                victim.armor.armorHP -= playerDamage;
+                victim.armor.armorHP = (int) victim.armor.armorHP;
                 if (victim.armor.armorHP < 0) {
                     victim.health += victim.armor.armorHP;
                     victim.armor.armorHP = 0;
                 }
             } else {
-                victim.health -= enemyDamage;
-                victim.health = BattleEngineUtil.round(victim.health, 2);
+                victim.health -= playerDamage;
+                victim.health = (int) victim.health;
                 if (victim.health < 0) {
                     victim.health = 0;
                 }
             }
             if (victim.health <= 0) {
-                System.out.println("You have been defeated!");
+                System.out.println("You have defeated your opponent!");
                 return false;
             }
         }
@@ -283,7 +280,7 @@ public class Game {
             displayMove(playerData.primaryAttack, 1, cooldowns.playerPrimary1Cooldown);
             displayMove(playerData.secondaryAttack, 2, cooldowns.playerSecondary1Cooldown);
             displayMove(3, "Evade", playerData.evadeCooldown, cooldowns.playerEvadeCooldown);
-            displayMove(playerData.ultimateAttack, 1, cooldowns.playerUltimateCooldown);
+            displayMove(playerData.ultimateAttack, 4, cooldowns.playerUltimateCooldown);
             System.out.println("5. Enter Hyper Mode : Enter 5");
             /*
              * if (BattleEngineUtil.cooldown(playerHyperModeCooldown,
