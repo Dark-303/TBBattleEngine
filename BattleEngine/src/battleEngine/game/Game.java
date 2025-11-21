@@ -98,9 +98,7 @@ public class Game {
             BattleEngineUtil.wait(3);
 
             game = checkDamage(playerDamage, enemyData);
-            if (!game) {
-                break;
-            }
+            if (!game) break;
 
             // Convert to single method later
             System.out.println("Enemy's Turn");
@@ -134,9 +132,7 @@ public class Game {
             BattleEngineUtil.wait(3);
 
             game = checkDamage(enemyDamage, playerData);
-            if (!game) {
-                break;
-            }
+            if (!game) break;
         }
     }
 
@@ -150,13 +146,15 @@ public class Game {
 
     public int runTurn(double currCooldown, Attack attack) {
         if (currCooldown >= attack.cooldown) {
-            playerDamage = (int) attack.useAttack(Math.random() < attack.critChance);
+            boolean crit = Math.random() < attack.critChance;
+            playerDamage = (int) attack.useAttack(crit);
             cooldowns.playerPrimary1Cooldown += 1;
             cooldowns.playerSecondary1Cooldown += 1;
             cooldowns.playerEvadeCooldown += 1;
             cooldowns.playerUltimateCooldown += 1;
             cooldowns.playerHyperModeCooldown += 1;
             System.out.println("Using " + attack.name + "!");
+            if (crit) System.out.println("Critical hit!");
             System.out.println("Dealing " + playerDamage + " damage...");
             System.out.println();
         } else {
@@ -166,13 +164,15 @@ public class Game {
     }
 
     public int runEnemyTurn(double currCooldown, Attack attack) {
-        enemyDamage = (int) attack.useAttack(Math.random() < attack.critChance);
+        boolean crit = Math.random() < attack.critChance;
+        enemyDamage = (int) attack.useAttack(crit);
         cooldowns.enemyPrimary1Cooldown += 1;
         cooldowns.enemySecondary1Cooldown += 1;
         cooldowns.enemyEvadeCooldown += 1;
         cooldowns.enemyUltimateCooldown = 0;
         cooldowns.enemyHyperModeCooldown += 1;
         System.out.println("Using " + attack.name + "!");
+        if (crit) System.out.println("Critical hit!");
         System.out.println("Dealing " + enemyDamage + " damage...");
         System.out.println();
         return 0;
