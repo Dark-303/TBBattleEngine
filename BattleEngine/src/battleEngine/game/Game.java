@@ -62,168 +62,23 @@ public class Game {
         System.out.println("Player mode initiated.");
         System.out.println();
         while (game) {
-            while (!check) {
-                System.out.println("Player's turn.");
-                System.out.println("Player HP: " + playerData.health);
-                System.out.println("Armor HP: " + playerData.armor.armorHP);
-                System.out.println("Enemy HP: " + enemyData.health);
-                System.out.println("Enemy Armor HP: " + enemyData.armor.armorHP);
-                System.out.println();
-                System.out.println("Select from the following options:");
-                System.out.println("1. " + playerData.primaryAttack.name + " : Enter 1");
-                if (BattleEngineUtil.cooldown(cooldowns.playerPrimary1Cooldown, playerData.primaryAttack.cooldown)) {
-                    System.out.println("   (Ready)");
-                } else {
-                    if (playerData.primaryAttack.cooldown - cooldowns.playerPrimary1Cooldown > 1) {
-                        System.out.println("   (Cooldown: "
-                                + (playerData.primaryAttack.cooldown - cooldowns.playerPrimary1Cooldown) + " turns)");
-                    } else {
-                        System.out.println("   (Cooldown: "
-                                + (playerData.primaryAttack.cooldown - cooldowns.playerPrimary1Cooldown) + " turn)");
-                    }
-                }
-                System.out.println("2. " + playerData.secondaryAttack.name + " : Enter 2");
-                if (BattleEngineUtil.cooldown(cooldowns.playerSecondary1Cooldown,
-                        playerData.secondaryAttack.cooldown)) {
-                    System.out.println("   (Ready)");
-                } else {
-                    if (playerData.secondaryAttack.cooldown - cooldowns.playerSecondary1Cooldown > 1) {
-                        System.out.println("   (Cooldown: "
-                                + (playerData.secondaryAttack.cooldown - cooldowns.playerSecondary1Cooldown)
-                                + " turns)");
-                    } else {
-                        System.out.println("   (Cooldown: "
-                                + (playerData.secondaryAttack.cooldown - cooldowns.playerSecondary1Cooldown)
-                                + " turn)");
-                    }
-                }
-                System.out.println("3. Evade : Enter 3");
-                if (BattleEngineUtil.cooldown(cooldowns.playerEvadeCooldown, playerData.evadeCooldown)) {
-                    System.out.println("   (Ready)");
-                } else {
-                    if (playerData.evadeCooldown - cooldowns.playerEvadeCooldown > 1) {
-                        System.out.println(
-                                "   (Cooldown: " + (playerData.evadeCooldown - cooldowns.playerEvadeCooldown)
-                                        + " turns)");
-                    } else {
-                        System.out.println(
-                                "   (Cooldown: " + (playerData.evadeCooldown - cooldowns.playerEvadeCooldown)
-                                        + " turn)");
-                    }
-                }
-                System.out.println("4. " + playerData.ultimateAttack.cooldown + " : Enter 4");
-                if (BattleEngineUtil.cooldown(cooldowns.playerUltimateCooldown, playerData.ultimateAttack.cooldown)) {
-                    System.out.println("   (Ready)");
-                } else {
-                    if (playerData.ultimateAttack.cooldown - cooldowns.playerUltimateCooldown > 1) {
-                        System.out.println(
-                                "   (Cooldown: "
-                                        + (playerData.ultimateAttack.cooldown - cooldowns.playerUltimateCooldown)
-                                        + " turns)");
-                    } else {
-                        System.out.println(
-                                "   (Cooldown: "
-                                        + (playerData.ultimateAttack.cooldown - cooldowns.playerUltimateCooldown)
-                                        + " turn)");
-                    }
-                }
-                System.out.println("5. Enter Hyper Mode : Enter 5");
-                /*
-                 * if (BattleEngineUtil.cooldown(playerHyperModeCooldown,
-                 * playerData.hyperModeCooldown))) {
-                 * System.out.println("   (Ready)");
-                 * } else {
-                 * System.out.println("   (Cooldown: " + (playerData.hyperModeCooldown -
-                 * playerHyperModeCooldown) + " turns)");
-                 * }
-                 */
-                System.out.print("Enter your choice: ");
-                try {
-                    choice = selection.nextInt();
-                    check = true;
-                    System.out.println();
-                } catch (InputMismatchException e) {
-                    System.out.println("error: not a number");
-                    System.out.println();
-                    selection.next();
-                }
-            }
-            check = false;
+            choice = playerChoice();
             switch (choice) {
                 case 1:
-                    if (cooldowns.playerPrimary1Cooldown >= playerData.primaryAttack1Cooldown) {
-                        playerDamage = playerData.primaryAttack
-                                .useAttack(Math.random() < playerData.primaryAttack.critChance);
-                        cooldowns.playerPrimary1Cooldown = 0;
-                        cooldowns.playerSecondary1Cooldown += 1;
-                        cooldowns.playerEvadeCooldown += 1;
-                        cooldowns.playerUltimateCooldown += 1;
-                        cooldowns.playerHyperModeCooldown += 1;
-                        System.out.println("Using " + playerData.primaryAttack1Name + "!");
-                        System.out.println("Dealing " + playerDamage + " damage...");
-                        System.out.println();
-                    } else {
-                        System.out.println("Ability on cooldown. Turn skipped.");
-                    }
+                    cooldowns.playerPrimary1Cooldown = runTurn(cooldowns.playerPrimary1Cooldown,
+                            playerData.primaryAttack);
                     break;
                 case 2:
-                    if (playerSecondary1Cooldown >= playerData.secondaryAttack1Cooldown) {
-                        playerDamage = (float) Math.random()
-                                * (playerData.secondaryAttack1MaxDamage - playerData.secondaryAttack1MinDamage)
-                                + playerData.secondaryAttack1MinDamage;
-                        if (Math.random() < playerData.secondaryAttack1CritChance) {
-                            playerDamage *= 1 + playerData.secondaryAttack1CritMultiplier;
-                            System.out.println("Critical hit!");
-                        }
-                        playerDamage = BattleEngineUtil.round(playerDamage, 2);
-                        playerPrimary1Cooldown += 1;
-                        playerSecondary1Cooldown = 0;
-                        playerEvadeCooldown += 1;
-                        playerUltimateCooldown += 1;
-                        playerHyperModeCooldown += 1;
-                        System.out.println("Using " + playerData.secondaryAttack1Name + "!");
-                        System.out.println("Dealing " + playerDamage + " damage...");
-                        System.out.println();
-                    } else {
-                        System.out.println("Ability on cooldown. Turn skipped.");
-                    }
+                    cooldowns.playerSecondary1Cooldown = runTurn(cooldowns.playerSecondary1Cooldown,
+                            playerData.secondaryAttack);
                     break;
                 case 3:
-                    if (playerEvadeCooldown >= playerData.evadeCooldown)
-                        playerEvadeAmount = Math.random() * enemyDamage * playerData.speed / 5;
-                    playerEvadeAmount = BattleEngineUtil.round(playerEvadeAmount, 2);
-                    enemyDamage -= playerEvadeAmount;
-                    playerPrimary1Cooldown += 1;
-                    playerSecondary1Cooldown += 1;
-                    playerEvadeCooldown = 0;
-                    playerUltimateCooldown += 1;
-                    playerHyperModeCooldown += 1;
-                    playerDamage = 0;
-                    System.out.println("Evaded " + playerEvadeAmount + " damage");
-                    System.out.println();
+                    cooldowns.playerEvadeCooldown = runEvade(cooldowns.playerEvadeCooldown,
+                            enemyData.speed);
                     break;
                 case 4:
-                    if (playerUltimateCooldown >= playerData.ultimateCooldown) {
-                        playerDamage = (float) Math.random()
-                                * (playerData.ultimateMaxDamage - playerData.ultimateMinDamage)
-                                + playerData.ultimateMinDamage;
-                        if (Math.random() < playerData.ultimateCritChance) {
-                            playerDamage *= 1 + playerData.ultimateCritMultiplier;
-                            System.out.println("Critical hit!");
-                        }
-                        playerDamage = BattleEngineUtil.round(playerDamage, 2);
-                        playerPrimary1Cooldown += 1;
-                        playerSecondary1Cooldown += 1;
-                        playerEvadeCooldown += 1;
-                        playerUltimateCooldown = 0;
-                        playerHyperModeCooldown += 1;
-                        System.out.println("Using " + playerData.ultimateName + "!");
-                        System.out.println("Dealing " + playerDamage + " damage...");
-                        System.out.println();
-                    } else {
-                        System.out.println("Ability on cooldown. Turn skipped.");
-                    }
-                    System.out.println();
+                    cooldowns.playerUltimateCooldown = runTurn(cooldowns.playerUltimateCooldown,
+                            playerData.ultimateAttack);
                     break;
                 case 5:
                     System.out.println("You entered Hyper Mode!");
@@ -239,34 +94,12 @@ public class Game {
             // Pause to show your action
             BattleEngineUtil.wait(3);
 
-            if (enemyDamage > 0) {
-                if (playerData.armorHP > 0) {
-                    playerData.armorHP -= enemyDamage;
-                    playerData.armorHP = BattleEngineUtil.round(playerData.armorHP, 2);
-                    if (playerData.armorHP < 0) {
-                        playerData.health += playerData.armorHP;
-                        playerData.armorHP = 0;
-                    }
-                } else {
-                    playerData.health -= enemyDamage;
-                    playerData.health = BattleEngineUtil.round(playerData.health, 2);
-                    if (playerData.health < 0) {
-                        playerData.health = 0;
-                    }
-                }
-                if (playerData.health <= 0) {
-                    System.out.println("You have been defeated!");
-                    game = false;
-                    break;
-                }
+            game = checkDamage(playerDamage, enemyData);
+            if (game) {
+                break;
             }
-
-            System.out.println("Enemy's turn.");
-            System.out.println("Player HP: " + playerData.health);
-            System.out.println("Armor HP: " + playerData.armorHP);
-            System.out.println("Enemy HP: " + enemyData.health);
-            System.out.println("Enemy Armor HP: " + enemyData.armorHP);
-            System.out.println();
+            
+            stats();
             if (playerDamage > (enemyData.health + enemyData.armorHP) * 0.8
                     && enemyEvadeCooldown >= enemyData.evadeCooldown) {
                 enemyEvadeAmount = Math.random() * playerDamage * enemyData.speed / 5;
@@ -361,7 +194,16 @@ public class Game {
         }
     }
 
-    public void runTurnPlayer(double currCooldown, Attack attack) {
+    public void stats() {
+        System.out.println("Enemy's turn.");
+        System.out.println("Player HP: " + playerData.health);
+        System.out.println("Armor HP: " + playerData.armor.armorHP);
+        System.out.println("Enemy HP: " + enemyData.health);
+        System.out.println("Enemy Armor HP: " + enemyData.armor.armorHP);
+        System.out.println();
+    }
+
+    public int runTurn(double currCooldown, Attack attack) {
         if (currCooldown >= attack.cooldown) {
             playerDamage = attack.useAttack(Math.random() < attack.critChance);
             cooldowns.playerPrimary1Cooldown += 1;
@@ -369,12 +211,141 @@ public class Game {
             cooldowns.playerEvadeCooldown += 1;
             cooldowns.playerUltimateCooldown += 1;
             cooldowns.playerHyperModeCooldown += 1;
-            currCooldown = 0;
             System.out.println("Using " + attack.name + "!");
             System.out.println("Dealing " + playerDamage + " damage...");
             System.out.println();
         } else {
             System.out.println("Ability on cooldown. Turn skipped.");
         }
+        return 0;
+    }
+
+    public int runEvade(double currCooldown, double speed) {
+        if (currCooldown >= playerData.evadeCooldown) {
+            playerEvadeAmount = Math.random() * playerDamage * speed / 5;
+            playerDamage -= playerEvadeAmount;
+            playerEvadeAmount = BattleEngineUtil.round(playerEvadeAmount, 2);
+            cooldowns.playerPrimary1Cooldown += 1;
+            cooldowns.playerSecondary1Cooldown += 1;
+            cooldowns.playerEvadeCooldown = 0;
+            cooldowns.playerUltimateCooldown += 1;
+            cooldowns.playerHyperModeCooldown += 1;
+            enemyDamage = 0;
+            System.out.println("Evaded " + playerEvadeAmount + " damage");
+            System.out.println();
+        } else {
+            System.out.println("Ability on cooldown. Turn skipped.");
+        }
+        return 0;
+    }
+
+    public void displayMove(Attack move, int optionNum, int currCooldown) {
+        System.out.println(optionNum + ". " + move.name + " : Enter " + optionNum);
+        if (BattleEngineUtil.cooldown(currCooldown, move.cooldown)) {
+            System.out.println("   (Ready)");
+        } else {
+            int cooldownTotal = move.cooldown - currCooldown;
+            if (cooldownTotal > 1) {
+                System.out.println("   (Cooldown: " + cooldownTotal + " turns)");
+            } else {
+                System.out.println("   (Cooldown: " + cooldownTotal + " turn)");
+            }
+        }
+    }
+
+    public void displayMove(int optionNum, String name, int maxCooldown, int currCooldown) {
+        System.out.println(optionNum + ". " + name + " : Enter " + optionNum);
+        if (BattleEngineUtil.cooldown(currCooldown, maxCooldown)) {
+            System.out.println("   (Ready)");
+        } else {
+            int cooldownTotal = maxCooldown - currCooldown;
+            if (cooldownTotal > 1) {
+                System.out.println("   (Cooldown: " + cooldownTotal + " turns)");
+            } else {
+                System.out.println("   (Cooldown: " + cooldownTotal + " turn)");
+            }
+        }
+    }
+
+    public boolean checkDamage(double damage, PlayerData victim) {
+        if (damage > 0) {
+            if (victim.armor.armorHP > 0) {
+                victim.armor.armorHP -= enemyDamage;
+                victim.armor.armorHP = BattleEngineUtil.round(victim.armor.armorHP, 2);
+                if (victim.armor.armorHP < 0) {
+                    victim.health += victim.armor.armorHP;
+                    victim.armor.armorHP = 0;
+                }
+            } else {
+                victim.health -= enemyDamage;
+                victim.health = BattleEngineUtil.round(victim.health, 2);
+                if (victim.health < 0) {
+                    victim.health = 0;
+                }
+            }
+            if (victim.health <= 0) {
+                System.out.println("You have been defeated!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkDamage(double damage, EnemyData victim) {
+        if (damage > 0) {
+            if (victim.armor.armorHP > 0) {
+                victim.armor.armorHP -= enemyDamage;
+                victim.armor.armorHP = BattleEngineUtil.round(victim.armor.armorHP, 2);
+                if (victim.armor.armorHP < 0) {
+                    victim.health += victim.armor.armorHP;
+                    victim.armor.armorHP = 0;
+                }
+            } else {
+                victim.health -= enemyDamage;
+                victim.health = BattleEngineUtil.round(victim.health, 2);
+                if (victim.health < 0) {
+                    victim.health = 0;
+                }
+            }
+            if (victim.health <= 0) {
+                System.out.println("You have been defeated!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int playerChoice() {
+        boolean check = false;
+        while (!check) {
+            stats();
+            System.out.println("Select from the following options:");
+
+            displayMove(playerData.primaryAttack, 1, cooldowns.playerPrimary1Cooldown);
+            displayMove(playerData.secondaryAttack, 2, cooldowns.playerSecondary1Cooldown);
+            displayMove(3, "Evade", playerData.evadeCooldown, cooldowns.playerEvadeCooldown);
+            displayMove(playerData.ultimateAttack, 1, cooldowns.playerUltimateCooldown);
+            System.out.println("5. Enter Hyper Mode : Enter 5");
+            /*
+             * if (BattleEngineUtil.cooldown(playerHyperModeCooldown,
+             * playerData.hyperModeCooldown))) {
+             * System.out.println("   (Ready)");
+             * } else {
+             * System.out.println("   (Cooldown: " + (playerData.hyperModeCooldown -
+             * playerHyperModeCooldown) + " turns)");
+             * }
+             */
+            System.out.print("Enter your choice: ");
+            try {
+                choice = selection.nextInt();
+                check = true;
+                System.out.println();
+            } catch (InputMismatchException e) {
+                System.out.println("error: not a number");
+                System.out.println();
+                selection.next();
+            }
+        }
+        return choice;
     }
 }
