@@ -57,11 +57,14 @@ public class Game {
     public Game(GameIO io) {
         // Initialize Entities
         playerData = io.updatePlayer();
-        enemyData = io.updateEnemy().getEnemyData(); // Gets the scaled EnemyData
+        enemyData = io.updateEnemy();
 
         System.out.println("Player mode initiated.");
         System.out.println();
-        while (game) {
+    }
+
+    public void runGame() {
+                while (game) {
             choice = playerChoice();
             switch (choice) {
                 case 1:

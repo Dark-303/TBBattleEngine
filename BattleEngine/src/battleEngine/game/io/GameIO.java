@@ -1,7 +1,7 @@
 package battleEngine.game.io;
 
+import battleEngine.data.entities.EnemyData;
 import battleEngine.data.entities.PlayerData;
-import battleEngine.data.entities.enemies.ScaledFireEnemy;
 
 public interface GameIO {
     public class GameIOCooldowns {
@@ -30,7 +30,7 @@ public interface GameIO {
         return null;
     }
 
-    public default ScaledFireEnemy updateEnemy() {
+    public default EnemyData updateEnemy() {
         return null;
     }
 }
