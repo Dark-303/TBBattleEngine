@@ -1,13 +1,13 @@
 package battleEngine;
 
+import battleEngine.Constants.Mode;
 import battleEngine.game.Game;
 
-public class BattleEngine {
-    public Modes currentMode;
+public class BattleEngine{
     public Game game;
 
     public BattleEngine() {
-        currentMode = Modes.PLAYER;
+        Constants.currentMode = Mode.PLAYER;
         Game game = Game.getInstance();
         game.runGame();
     }
