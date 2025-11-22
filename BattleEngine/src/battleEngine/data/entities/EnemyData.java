@@ -9,7 +9,7 @@ public class EnemyData {
     public double scaleFactor;
 
     // General Stats
-    public double health;
+    public int health;
     public double speed;
 
     // Attacks
@@ -31,10 +31,10 @@ public class EnemyData {
     // Evade
     public int evadeCooldown;
 
-    public EnemyData(int health, int speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
+    public EnemyData(int health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
             int evadeCooldown, double scaleFactor) {
         this.health = (int) (health * scaleFactor);
-        this.speed = (int) (speed * scaleFactor);
+        this.speed = speed * scaleFactor;
         this.armor = armor;
         this.primaryAttack = primary;
         this.secondaryAttack = secondary;
@@ -60,8 +60,8 @@ public class EnemyData {
         this.ultimateAttack.critChance = (int) (this.ultimateAttack.minDamage * scaleFactor);
     }
 
-    public EnemyData(int health, int speed, Armor armor, Weapon weapon, int evadeCooldown, double scaleFactor) {
-        this.health = health * scaleFactor;
+    public EnemyData(int health, double speed, Armor armor, Weapon weapon, int evadeCooldown, double scaleFactor) {
+        this.health = (int)(health * scaleFactor);
         this.speed = speed * scaleFactor;
         this.armor = armor;
         this.weapon = weapon;

@@ -6,7 +6,7 @@ import battleEngine.data.models.Weapon;
 
 public class PlayerData {
     // General Stats
-    public double health;
+    public int health;
     public double speed;
 
     // Attacks
@@ -39,7 +39,7 @@ public class PlayerData {
         this.evadeCooldown = evadeCooldown;
     }
 
-    public PlayerData(int health, int speed, Armor armor, Weapon weapon, int evadeCooldown) {
+    public PlayerData(int health, double speed, Armor armor, Weapon weapon, int evadeCooldown) {
         this.health = health;
         this.speed = speed;
         this.armor = armor;

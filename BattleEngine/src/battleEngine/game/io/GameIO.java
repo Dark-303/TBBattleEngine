@@ -33,4 +33,6 @@ public interface GameIO {
     public default EnemyData updateEnemy() {
         return null;
     }
+
+    public default void runGame() {}
 }
