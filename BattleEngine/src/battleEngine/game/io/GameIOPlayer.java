@@ -89,6 +89,7 @@ public class GameIOPlayer implements GameIO {
 
             game = playerData.checkDamage(gm.enemyDamage, gm.playerEvadeAmount);
             gm.playerEvadeAmount = 0;
+            gm.enemyDamage = 0;
             if (!game) break;
 
             // Convert to single method later
@@ -123,6 +124,7 @@ public class GameIOPlayer implements GameIO {
 
             game = enemyData.checkDamage(gm.playerDamage, gm.enemyEvadeAmount);
             gm.enemyEvadeAmount = 0;
+            gm.playerDamage = 0;
             if (!game) break;
         }
     }
