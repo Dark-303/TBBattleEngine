@@ -73,14 +73,11 @@ public class GameMethods {
 
     public int runEvade(double currCooldown, double speed) {
         if (currCooldown >= playerData.evadeCooldown) {
-            playerEvadeAmount = (int) (Math.random() * playerDamage * speed / 5);
-            playerDamage -= playerEvadeAmount;
+            playerEvadeAmount = (int) (Math.random() * enemyDamage * speed / 5);
             cooldowns.playerPrimary1Cooldown += 1;
             cooldowns.playerSecondary1Cooldown += 1;
-            cooldowns.playerEvadeCooldown = 0;
             cooldowns.playerUltimateCooldown += 1;
             cooldowns.playerHyperModeCooldown += 1;
-            enemyDamage = 0;
             System.out.println("Evaded " + playerEvadeAmount + " damage");
             System.out.println();
         } else {

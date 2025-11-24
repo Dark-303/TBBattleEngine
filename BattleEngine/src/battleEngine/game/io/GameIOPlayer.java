@@ -98,7 +98,6 @@ public class GameIOPlayer implements GameIO {
             if (gm.playerDamage > (enemyData.health + enemyData.armor.armorHP) * 0.8
                     && cooldowns.enemyEvadeCooldown >= enemyData.evadeCooldown) {
                 gm.enemyEvadeAmount = (int) (Math.random() * gm.playerDamage * enemyData.speed / 5);
-                gm.playerDamage -= gm.enemyEvadeAmount;
                 cooldowns.enemyPrimary1Cooldown += 1;
                 cooldowns.enemySecondary1Cooldown += 1;
                 cooldowns.enemyEvadeCooldown = 0;
