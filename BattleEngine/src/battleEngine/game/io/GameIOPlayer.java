@@ -87,9 +87,9 @@ public class GameIOPlayer implements GameIO {
             // Pause to show your action
             BattleEngineUtil.wait(3);
 
-            game = enemyData.checkDamage(gm.playerDamage, gm.enemyEvadeAmount);
-            if (!game)
-                break;
+            game = playerData.checkDamage(gm.enemyDamage, gm.playerEvadeAmount);
+            gm.playerEvadeAmount = 0;
+            if (!game) break;
 
             // Convert to single method later
             System.out.println(enemyData.name + "'s Turn");
@@ -121,9 +121,9 @@ public class GameIOPlayer implements GameIO {
             // Pause to show enemy action
             BattleEngineUtil.wait(3);
 
-            game = playerData.checkDamage(gm.enemyDamage, gm.playerEvadeAmount);
-            if (!game)
-                break;
+            game = enemyData.checkDamage(gm.playerDamage, gm.enemyEvadeAmount);
+            gm.enemyEvadeAmount = 0;
+            if (!game) break;
         }
     }
 }
