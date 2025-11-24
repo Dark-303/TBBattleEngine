@@ -124,7 +124,9 @@ public class EnemyData {
         ultimateAttack.critChance = (int) (ultimateAttack.minDamage * scaleFactor);
     }
 
-    public boolean checkDamage(double damage) {
+    public boolean checkDamage(int damage, int evasion) {
+        damage = damage-evasion;
+        if (damage < 0) damage = 0;
         if (damage > 0) {
             if (armor.armorHP > 0) {
                 armor.armorHP -= damage;

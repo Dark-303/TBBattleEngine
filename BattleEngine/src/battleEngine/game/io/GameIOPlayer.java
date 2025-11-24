@@ -32,7 +32,7 @@ public class GameIOPlayer implements GameIO {
         playerArmor = new Armor("Tekketsuhana Armor", 100);
         playerData = new PlayerData(100, 7, playerArmor, playerPrimary, playerSecondary, playerUltimate, 1);
 
-        enemyData = new TestBoss2(scaleFactor);
+        enemyData = new TestBoss(scaleFactor);
 
         cooldowns = new GameIOCooldowns();
 
@@ -87,7 +87,7 @@ public class GameIOPlayer implements GameIO {
             // Pause to show your action
             BattleEngineUtil.wait(3);
 
-            game = enemyData.checkDamage(gm.playerDamage);
+            game = enemyData.checkDamage(gm.playerDamage, gm.enemyEvadeAmount);
             if (!game)
                 break;
 
@@ -103,7 +103,6 @@ public class GameIOPlayer implements GameIO {
                 cooldowns.enemyEvadeCooldown = 0;
                 cooldowns.enemyUltimateCooldown += 1;
                 cooldowns.enemyHyperModeCooldown += 1;
-                gm.enemyDamage = 0;
                 System.out.println("Evaded " + gm.enemyEvadeAmount + " damage");
                 System.out.println();
             } else if (cooldowns.enemyUltimateCooldown >= enemyData.ultimateAttack.cooldown) {
@@ -122,7 +121,7 @@ public class GameIOPlayer implements GameIO {
             // Pause to show enemy action
             BattleEngineUtil.wait(3);
 
-            game = playerData.checkDamage(gm.enemyDamage);
+            game = playerData.checkDamage(gm.enemyDamage, gm.playerEvadeAmount);
             if (!game)
                 break;
         }
