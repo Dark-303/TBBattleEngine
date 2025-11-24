@@ -7,6 +7,7 @@ import battleEngine.data.models.Attack;
 public class WeakFireEnemy extends EnemyData {
     public WeakFireEnemy(double scale) {
         super(
+                null,
                 100,
                 7,
                 new Armor("Fire Proof T Shirt", 100),

@@ -30,8 +30,8 @@ public class GameMethods {
     public void stats() {
         System.out.println("Player HP: " + playerData.health);
         System.out.println("Armor HP: " + playerData.armor.armorHP);
-        System.out.println("Enemy HP: " + enemyData.health);
-        System.out.println("Enemy Armor HP: " + enemyData.armor.armorHP);
+        System.out.println(enemyData.name + " HP: " + enemyData.health);
+        System.out.println(enemyData.name + " Armor HP: " + enemyData.armor.armorHP);
         System.out.println();
     }
 
@@ -115,53 +115,6 @@ public class GameMethods {
                 System.out.println("   (Cooldown: " + cooldownTotal + " turn)");
             }
         }
-    }
-
-    public boolean checkDamage(double damage, PlayerData victim) {
-        if (damage > 0) {
-            if (victim.armor.armorHP > 0) {
-                victim.armor.armorHP -= enemyDamage;
-                if (victim.armor.armorHP < 0) {
-                    victim.health += victim.armor.armorHP;
-                    victim.armor.armorHP = 0;
-                }
-            } else {
-                victim.health -= enemyDamage;
-                victim.health = (int) victim.health;
-                if (victim.health < 0) {
-                    victim.health = 0;
-                }
-            }
-            if (victim.health <= 0) {
-                System.out.println("You have been defeated!");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean checkDamage(double damage, EnemyData victim) {
-        if (damage > 0) {
-            if (victim.armor.armorHP > 0) {
-                victim.armor.armorHP -= playerDamage;
-                victim.armor.armorHP = (int) victim.armor.armorHP;
-                if (victim.armor.armorHP < 0) {
-                    victim.health += victim.armor.armorHP;
-                    victim.armor.armorHP = 0;
-                }
-            } else {
-                victim.health -= playerDamage;
-                victim.health = (int) victim.health;
-                if (victim.health < 0) {
-                    victim.health = 0;
-                }
-            }
-            if (victim.health <= 0) {
-                System.out.println("You have defeated your opponent!");
-                return false;
-            }
-        }
-        return true;
     }
 
     public int playerChoice() {

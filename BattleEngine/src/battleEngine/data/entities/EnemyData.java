@@ -5,6 +5,8 @@ import battleEngine.data.models.Attack;
 import battleEngine.data.models.Weapon;
 
 public class EnemyData {
+    public String name;
+
     // Scale Factor
     public double scaleFactor;
 
@@ -31,8 +33,13 @@ public class EnemyData {
     // Evade
     public int evadeCooldown;
 
-    public EnemyData(int health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
+    public EnemyData(String name, int health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
             int evadeCooldown, double scaleFactor) {
+        if (name == null) {
+            this.name = "Enemy";
+        } else {
+            this.name = name;
+        }
         this.health = (int) (health * scaleFactor);
         this.speed = speed * scaleFactor;
         this.armor = armor;
@@ -61,7 +68,7 @@ public class EnemyData {
     }
 
     public EnemyData(int health, double speed, Armor armor, Weapon weapon, int evadeCooldown, double scaleFactor) {
-        this.health = (int)(health * scaleFactor);
+        this.health = (int) (health * scaleFactor);
         this.speed = speed * scaleFactor;
         this.armor = armor;
         this.weapon = weapon;
@@ -90,5 +97,55 @@ public class EnemyData {
         hyperModeMultiplier = multiplier;
         hyperModeDuration = duration;
         hyperModeCooldown = cooldown;
+    }
+
+    public void checkPhase() {
+    }
+
+    public void applyScale() {
+        health = (int) (health * scaleFactor);
+        speed = speed * scaleFactor;
+
+        armor.armorHP = (int) (armor.armorHP * scaleFactor);
+
+        primaryAttack.maxDamage = (int) (primaryAttack.maxDamage * scaleFactor);
+        primaryAttack.minDamage = (int) (primaryAttack.minDamage * scaleFactor);
+        primaryAttack.critMultiplier = (int) (primaryAttack.critMultiplier * scaleFactor);
+        primaryAttack.critChance = (int) (primaryAttack.critChance * scaleFactor);
+
+        secondaryAttack.maxDamage = (int) (secondaryAttack.maxDamage * scaleFactor);
+        secondaryAttack.minDamage = (int) (secondaryAttack.minDamage * scaleFactor);
+        secondaryAttack.critMultiplier = (int) (secondaryAttack.critMultiplier * scaleFactor);
+        secondaryAttack.critChance = (int) (secondaryAttack.critChance * scaleFactor);
+
+        ultimateAttack.maxDamage = (int) (ultimateAttack.maxDamage * scaleFactor);
+        ultimateAttack.minDamage = (int) (ultimateAttack.minDamage * scaleFactor);
+        ultimateAttack.critMultiplier = (int) (ultimateAttack.minDamage * scaleFactor);
+        ultimateAttack.critChance = (int) (ultimateAttack.minDamage * scaleFactor);
+    }
+
+    public boolean checkDamage(double damage) {
+        if (damage > 0) {
+            if (armor.armorHP > 0) {
+                armor.armorHP -= damage;
+                armor.armorHP = (int) armor.armorHP;
+                if (armor.armorHP < 0) {
+                    health += armor.armorHP;
+                    armor.armorHP = 0;
+                }
+            } else {
+                health -= damage;
+                health = (int) health;
+                if (health < 0) {
+                    health = 0;
+                }
+            }
+            if (health <= 0) {
+                System.out.println("You have defeated your opponent!");
+                return false;
+            }
+        }
+        checkPhase();
+        return true;
     }
 }

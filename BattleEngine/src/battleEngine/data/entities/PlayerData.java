@@ -52,4 +52,27 @@ public class PlayerData {
         hyperModeDuration = duration;
         hyperModeCooldown = cooldown;
     }
+
+    public boolean checkDamage(double damage) {
+        if (damage > 0) {
+            if (armor.armorHP > 0) {
+                armor.armorHP -= damage;
+                if (armor.armorHP < 0) {
+                    health += armor.armorHP;
+                    armor.armorHP = 0;
+                }
+            } else {
+                health -= damage;
+                health = (int) health;
+                if (health < 0) {
+                    health = 0;
+                }
+            }
+            if (health <= 0) {
+                System.out.println("You have been defeated!");
+                return false;
+            }
+        }
+        return true;
+    }
 }

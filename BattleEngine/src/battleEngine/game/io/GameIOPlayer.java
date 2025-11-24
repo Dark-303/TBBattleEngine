@@ -3,6 +3,8 @@ package battleEngine.game.io;
 import battleEngine.BattleEngineUtil;
 import battleEngine.data.entities.EnemyData;
 import battleEngine.data.entities.PlayerData;
+import battleEngine.data.entities.enemies.TestBoss;
+import battleEngine.data.entities.enemies.TestBoss2;
 import battleEngine.data.entities.enemies.WeakFireEnemy;
 import battleEngine.data.models.Armor;
 import battleEngine.data.models.Attack;
@@ -30,7 +32,7 @@ public class GameIOPlayer implements GameIO {
         playerArmor = new Armor("Tekketsuhana Armor", 100);
         playerData = new PlayerData(100, 7, playerArmor, playerPrimary, playerSecondary, playerUltimate, 1);
 
-        enemyData = new WeakFireEnemy(scaleFactor);
+        enemyData = new TestBoss2(scaleFactor);
 
         cooldowns = new GameIOCooldowns();
 
@@ -85,12 +87,12 @@ public class GameIOPlayer implements GameIO {
             // Pause to show your action
             BattleEngineUtil.wait(3);
 
-            game = gm.checkDamage(gm.playerDamage, enemyData);
+            game = enemyData.checkDamage(gm.playerDamage);
             if (!game)
                 break;
 
             // Convert to single method later
-            System.out.println("Enemy's Turn");
+            System.out.println(enemyData.name + "'s Turn");
             gm.stats();
             if (gm.playerDamage > (enemyData.health + enemyData.armor.armorHP) * 0.8
                     && cooldowns.enemyEvadeCooldown >= enemyData.evadeCooldown) {
@@ -120,7 +122,7 @@ public class GameIOPlayer implements GameIO {
             // Pause to show enemy action
             BattleEngineUtil.wait(3);
 
-            game = gm.checkDamage(gm.enemyDamage, playerData);
+            game = playerData.checkDamage(gm.enemyDamage);
             if (!game)
                 break;
         }
