@@ -4,8 +4,6 @@ import battleEngine.BattleEngineUtil;
 import battleEngine.data.entities.EnemyData;
 import battleEngine.data.entities.PlayerData;
 import battleEngine.data.entities.enemies.TestBoss;
-import battleEngine.data.entities.enemies.TestBoss2;
-import battleEngine.data.entities.enemies.WeakFireEnemy;
 import battleEngine.data.models.Armor;
 import battleEngine.data.models.Attack;
 import battleEngine.game.GameMethods;
@@ -58,20 +56,21 @@ public class GameIOPlayer implements GameIO {
             choice = gm.playerChoice();
             switch (choice) {
                 case 1:
-                    cooldowns.playerPrimary1Cooldown = gm.runTurn(cooldowns.playerPrimary1Cooldown,
-                            playerData.primaryAttack);
+                    cooldowns.setPlayerPrimary1Cooldown(gm.runTurn(cooldowns.getPlayerPrimary1Cooldown(),
+                            playerData.getPrimaryAttack()));
                     break;
                 case 2:
-                    cooldowns.playerSecondary1Cooldown = gm.runTurn(cooldowns.playerSecondary1Cooldown,
-                            playerData.secondaryAttack);
+                    cooldowns.setPlayerSecondary1Cooldown(gm.runTurn(cooldowns.getPlayerSecondary1Cooldown(),
+                            playerData.getSecondaryAttack()));
                     break;
                 case 3:
-                    cooldowns.playerEvadeCooldown = gm.runEvade(cooldowns.playerEvadeCooldown,
-                            enemyData.speed);
+                    cooldowns.setPlayerEvadeCooldown(gm.runEvade(cooldowns.getPlayerEvadeCooldown(),
+                            enemyData.getSpeed()));
                     break;
+
                 case 4:
-                    cooldowns.playerUltimateCooldown = gm.runTurn(cooldowns.playerUltimateCooldown,
-                            playerData.ultimateAttack);
+                    cooldowns.setPlayerUltimateCooldown(gm.runTurn(cooldowns.getPlayerUltimateCooldown(),
+                            playerData.getUltimateAttack()));
                     break;
                 case 5:
                     System.out.println("You entered Hyper Mode!");
@@ -87,33 +86,33 @@ public class GameIOPlayer implements GameIO {
             // Pause to show your action
             BattleEngineUtil.wait(3);
 
-            game = playerData.checkDamage(gm.enemyDamage, gm.playerEvadeAmount);
-            gm.playerEvadeAmount = 0;
-            gm.enemyDamage = 0;
+            game = playerData.checkDamage(gm.getEnemyDamage(), gm.getPlayerEvadeAmount());
+            gm.setPlayerEvadeAmount(0);
+            gm.setEnemyDamage(0);
             if (!game) break;
 
             // Convert to single method later
-            System.out.println(enemyData.name + "'s Turn");
+            System.out.println(enemyData.getName() + "'s Turn");
             gm.stats();
-            if (gm.playerDamage > (enemyData.health + enemyData.armor.armorHP) * 0.8
-                    && cooldowns.enemyEvadeCooldown >= enemyData.evadeCooldown) {
-                gm.enemyEvadeAmount = (int) (Math.random() * gm.playerDamage * enemyData.speed / 5);
-                cooldowns.enemyPrimary1Cooldown += 1;
-                cooldowns.enemySecondary1Cooldown += 1;
-                cooldowns.enemyEvadeCooldown = 0;
-                cooldowns.enemyUltimateCooldown += 1;
-                cooldowns.enemyHyperModeCooldown += 1;
-                System.out.println("Evaded " + gm.enemyEvadeAmount + " damage");
+            if (gm.getPlayerDamage() > (enemyData.getHealth() + enemyData.getArmor().getArmorHP()) * 0.8
+                    && cooldowns.getEnemyEvadeCooldown() >= enemyData.getEvadeCooldown()) {
+                gm.setEnemyEvadeAmount((int) (Math.random() * gm.getPlayerDamage() * enemyData.getSpeed() / 5));
+                cooldowns.setEnemyPrimary1Cooldown(cooldowns.getEnemyPrimary1Cooldown() + 1);
+                cooldowns.setEnemySecondary1Cooldown(cooldowns.getEnemySecondary1Cooldown() + 1);
+                cooldowns.setEnemyEvadeCooldown(0);
+                cooldowns.setEnemyUltimateCooldown(cooldowns.getEnemyUltimateCooldown() + 1);
+                cooldowns.setEnemyHyperModeCooldown(cooldowns.getEnemyHyperModeCooldown() + 1);
+                System.out.println("Evaded " + gm.getEnemyEvadeAmount() + " damage");
                 System.out.println();
-            } else if (cooldowns.enemyUltimateCooldown >= enemyData.ultimateAttack.cooldown) {
-                cooldowns.enemyUltimateCooldown = gm.runEnemyTurn(cooldowns.enemyUltimateCooldown,
-                        enemyData.ultimateAttack);
-            } else if (cooldowns.enemyPrimary1Cooldown >= enemyData.primaryAttack.cooldown) {
-                cooldowns.enemyPrimary1Cooldown = gm.runEnemyTurn(cooldowns.enemyPrimary1Cooldown,
-                        enemyData.primaryAttack);
-            } else if (cooldowns.enemySecondary1Cooldown >= enemyData.secondaryAttack.cooldown) {
-                cooldowns.enemyPrimary2Cooldown = gm.runEnemyTurn(cooldowns.enemyPrimary2Cooldown,
-                        enemyData.secondaryAttack);
+            } else if (cooldowns.getEnemyUltimateCooldown() >= enemyData.getUltimateAttack().getCooldown()) {
+                cooldowns.setEnemyUltimateCooldown(gm.runEnemyTurn(cooldowns.getEnemyUltimateCooldown(),
+                        enemyData.getUltimateAttack()));
+            } else if (cooldowns.getEnemyPrimary1Cooldown() >= enemyData.getPrimaryAttack().getCooldown()) {
+                cooldowns.setEnemyPrimary1Cooldown(gm.runEnemyTurn(cooldowns.getEnemyPrimary1Cooldown(),
+                        enemyData.getPrimaryAttack()));
+            } else if (cooldowns.getEnemySecondary1Cooldown() >= enemyData.getSecondaryAttack().getCooldown()) {
+                cooldowns.setEnemyPrimary2Cooldown(gm.runEnemyTurn(cooldowns.getEnemyPrimary2Cooldown(),
+                        enemyData.getSecondaryAttack()));
             } else {
                 System.out.println("Enemy ability on cooldown. Turn skipped.");
             }
@@ -121,9 +120,9 @@ public class GameIOPlayer implements GameIO {
             // Pause to show enemy action
             BattleEngineUtil.wait(3);
 
-            game = enemyData.checkDamage(gm.playerDamage, gm.enemyEvadeAmount);
-            gm.enemyEvadeAmount = 0;
-            gm.playerDamage = 0;
+            game = enemyData.checkDamage(gm.getPlayerDamage(), gm.getEnemyEvadeAmount());
+            gm.setEnemyEvadeAmount(0);
+            gm.setPlayerDamage(0);
             if (!game) break;
         }
     }

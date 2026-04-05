@@ -5,22 +5,22 @@ import battleEngine.data.models.Armor;
 import battleEngine.data.models.Attack;
 
 public class TestBoss2 extends EnemyData {
-    int phase;
+    private int phase;
 
-    String phase2Name;
-    int phase2Health;
-    Armor phase2Armor;
-    Attack phase2Primary;
-    Attack phase2Secondary;
-    Attack phase2Ultimate;
-    int phase2Evade;
-    int phase2Speed;
-    String phase3Name;
-    Armor phase3Armor;
-    Attack phase3Primary;
-    Attack phase3Secondary;
-    Attack phase3Ultimate;
-    int phase3Evade;
+    private String phase2Name;
+    private int phase2Health;
+    private Armor phase2Armor;
+    private Attack phase2Primary;
+    private Attack phase2Secondary;
+    private Attack phase2Ultimate;
+    private int phase2Evade;
+    private int phase2Speed;
+    private String phase3Name;
+    private Armor phase3Armor;
+    private Attack phase3Primary;
+    private Attack phase3Secondary;
+    private Attack phase3Ultimate;
+    private int phase3Evade;
 
     public TestBoss2(double scale) {
         super(
@@ -52,18 +52,18 @@ public class TestBoss2 extends EnemyData {
 
     @Override
     public void checkPhase() {
-        if (phase == 1 && armor.armorHP == 0) {
+        if (phase == 1 && getArmor().getArmorHP() == 0) {
             System.out.println("PHASE CHANGE:");
             System.out.println("Flowering Lotus Armor Converge!");
             phase = 2;
-            name = phase2Name;
-            health = phase2Health;
-            armor = phase2Armor;
-            primaryAttack = phase2Primary;
-            secondaryAttack = phase2Secondary;
-            ultimateAttack = phase2Ultimate;
-            evadeCooldown = phase2Evade;
-            speed = phase2Speed;
+            setName(phase2Name);
+            setHealth(phase2Health);
+            setArmor(phase2Armor);
+            setPrimaryAttack(phase2Primary);
+            setSecondaryAttack(phase2Secondary);
+            setUltimateAttack(phase2Ultimate);
+            setEvadeCooldown(phase2Evade);
+            setSpeed(phase2Speed);
 
             applyScale();
         }
@@ -71,29 +71,31 @@ public class TestBoss2 extends EnemyData {
 
     @Override
     public boolean checkDamage(int damage, int evasion) {
-        damage = damage-evasion;
-        if (damage < 0) damage = 0;
+        damage = damage - evasion;
+        if (damage < 0)
+            damage = 0;
         if (damage > 0) {
-            if (armor.armorHP > 0) {
-                armor.armorHP -= damage;
-                armor.armorHP = (int) armor.armorHP;
-                if (armor.armorHP < 0) {
-                    health += armor.armorHP;
-                    armor.armorHP = 0;
+            if (getArmor().getArmorHP() > 0) {
+                getArmor().setArmorHP(getArmor().getArmorHP() - damage);
+                if (getArmor().getArmorHP() < 0) {
+                    setHealth(getHealth() + getArmor().getArmorHP());
+                    getArmor().setArmorHP(0);
                 }
             } else {
-                health -= damage;
-                health = (int) health;
-                if (health < 0) {
-                    health = 0;
+                setHealth(getHealth() - damage);
+                if (getHealth() < 0) {
+                    setHealth(0);
                 }
             }
             checkPhase();
-            if (health <= 0) {
+            if (getHealth() <= 0) {
                 System.out.println("You have defeated your opponent!");
                 return false;
             }
         }
         return true;
     }
+
+    public int getPhase() { return phase; }
+    public void setPhase(int phase) { this.phase = phase; }
 }

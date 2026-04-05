@@ -1,7 +1,6 @@
 package battleEngine.game;
 
 import battleEngine.Constants;
-import battleEngine.Constants.Mode;
 import battleEngine.game.io.GameIO;
 import battleEngine.game.io.GameIOPlayer;
 
@@ -11,17 +10,16 @@ public class Game {
     public static Game getInstance() {
         if (instance == null) {
             switch (Constants.currentMode) {
-                case Mode.PLAYER:
+                case PLAYER:
                     instance = new Game(new GameIOPlayer());
                     System.out.println("Player mode initiated.");
                     System.out.println();
                     break;
-                case Mode.WEAPON:
+                case WEAPON:
                     // instance = new Game(new GameIOWeapon());
                     break;
                 default:
-                    instance = new Game(new GameIO() {
-                    });
+                    instance = new Game(new GameIO() {});
                     break;
             }
         }

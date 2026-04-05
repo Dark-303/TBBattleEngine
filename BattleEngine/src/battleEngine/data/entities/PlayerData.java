@@ -6,27 +6,27 @@ import battleEngine.data.models.Weapon;
 
 public class PlayerData {
     // General Stats
-    public int health;
-    public double speed;
+    private int health;
+    private double speed;
 
     // Attacks
-    public Attack primaryAttack;
-    public Attack secondaryAttack;
-    public Attack ultimateAttack;
+    private Attack primaryAttack;
+    private Attack secondaryAttack;
+    private Attack ultimateAttack;
 
     // Weapon
-    public Weapon weapon;
+    private Weapon weapon;
 
     // Hyper Mode
-    public double hyperModeMultiplier;
-    public int hyperModeDuration;
-    public int hyperModeCooldown;
+    private double hyperModeMultiplier;
+    private int hyperModeDuration;
+    private int hyperModeCooldown;
 
     // Armor Stats
-    public Armor armor;
+    private Armor armor;
 
     // Evade
-    public int evadeCooldown;
+    private int evadeCooldown;
 
     public PlayerData(int health, double speed, Armor armor, Attack primary, Attack secondary, Attack ultimate,
             int evadeCooldown) {
@@ -54,14 +54,15 @@ public class PlayerData {
     }
 
     public boolean checkDamage(int damage, int evasion) {
-        damage = damage-evasion;
-        if (damage < 0) damage = 0;
+        damage = damage - evasion;
+        if (damage < 0)
+            damage = 0;
         if (damage > 0) {
-            if (armor.armorHP > 0) {
-                armor.armorHP -= damage;
-                if (armor.armorHP < 0) {
-                    health += armor.armorHP;
-                    armor.armorHP = 0;
+            if (armor.getArmorHP() > 0) {
+                armor.setArmorHP(armor.getArmorHP() - damage);
+                if (armor.getArmorHP() < 0) {
+                    health += armor.getArmorHP();
+                    armor.setArmorHP(0);
                 }
             } else {
                 health -= damage;
@@ -77,4 +78,27 @@ public class PlayerData {
         }
         return true;
     }
+
+    public int getHealth() { return health; }
+    public void setHealth(int health) { this.health = health; }
+    public double getSpeed() { return speed; }
+    public void setSpeed(double speed) { this.speed = speed; }
+    public Attack getPrimaryAttack() { return primaryAttack; }
+    public void setPrimaryAttack(Attack primaryAttack) { this.primaryAttack = primaryAttack; }
+    public Attack getSecondaryAttack() { return secondaryAttack; }
+    public void setSecondaryAttack(Attack secondaryAttack) { this.secondaryAttack = secondaryAttack; }
+    public Attack getUltimateAttack() { return ultimateAttack; }
+    public void setUltimateAttack(Attack ultimateAttack) { this.ultimateAttack = ultimateAttack; }
+    public Weapon getWeapon() { return weapon; }
+    public void setWeapon(Weapon weapon) { this.weapon = weapon; }
+    public double getHyperModeMultiplier() { return hyperModeMultiplier; }
+    public void setHyperModeMultiplier(double hyperModeMultiplier) { this.hyperModeMultiplier = hyperModeMultiplier; }
+    public int getHyperModeDuration() { return hyperModeDuration; }
+    public void setHyperModeDuration(int hyperModeDuration) { this.hyperModeDuration = hyperModeDuration; }
+    public int getHyperModeCooldown() { return hyperModeCooldown; }
+    public void setHyperModeCooldown(int hyperModeCooldown) { this.hyperModeCooldown = hyperModeCooldown; }
+    public Armor getArmor() { return armor; }
+    public void setArmor(Armor armor) { this.armor = armor; }
+    public int getEvadeCooldown() { return evadeCooldown; }
+    public void setEvadeCooldown(int evadeCooldown) { this.evadeCooldown = evadeCooldown; }
 }
